@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "89286819266",
+    "firebase_url": "https://dugo-89a88.firebaseio.com",
+    "project_id": "dugo-89a88",
+    "storage_bucket": "dugo-89a88.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:89286819266:android:35907d17e68205cd",
+        "android_client_info": {
+          "package_name": "com.android.parteek.dugo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "89286819266-ib0omtsa82u58sifgnqqib5dlo2h665i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.parteek.dugo",
+            "certificate_hash": "02f544eedec1bd7bb5d53d33a155f600ff842485"
+          }
+        },
+        {
+          "client_id": "89286819266-3tb60ihi5g4m5v4845t2cvs3dej742h9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAXl52s3lZP0cHHm8xG3gmr2sIV8lTvBQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "89286819266-3tb60ihi5g4m5v4845t2cvs3dej742h9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
