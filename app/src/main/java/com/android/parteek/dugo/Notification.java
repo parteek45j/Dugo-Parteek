@@ -100,7 +100,7 @@ public class Notification extends AppCompatActivity implements AdapterView.OnIte
         if(requestCode==1){
             if(resultCode==RESULT_OK){
                 Place place=PlacePicker.getPlace(data,this);
-                String address=String.format("%s",place.getName()+"\n"+place.getAddress());
+                String address=String.format(" %s",place.getName()+"\n"+place.getAddress());
                 text.setText(address);
             }
         }
