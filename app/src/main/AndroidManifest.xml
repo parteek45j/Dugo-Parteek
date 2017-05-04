@@ -3,6 +3,7 @@
     package="com.android.parteek.dugo">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:name=".MyApp"
@@ -47,6 +48,8 @@
             android:name=".Notification"
             android:theme="@style/AppTheme" />
         <activity android:name=".UserNotification"></activity>
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBMT95IA9pMtC-iMlRbswKldAN5LFfy_6A"/>
     </application>
 
 </manifest>

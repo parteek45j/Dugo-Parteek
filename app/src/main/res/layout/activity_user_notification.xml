@@ -8,20 +8,23 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context="com.android.parteek.dugo.UserNotification">
-
     <TextView
+        android:layout_marginTop="60dp"
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Accept Request"
         android:textSize="20dp"
-        android:layout_marginLeft="120dp"/>
+        android:layout_gravity="center_horizontal"/>
+
+
 
     <LinearLayout
         android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
+        android:orientation="horizontal"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="80dp"
+        android:layout_gravity="center_horizontal"
         >
 
 
@@ -30,9 +33,6 @@
         android:id="@+id/btnyes"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:layout_marginTop="24dp"
-        android:padding="12dp"
         android:onClick="onClick"
         android:layout_marginLeft="10dp"
         android:text="Accept" />
@@ -41,10 +41,7 @@
         android:id="@+id/btnno"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:layout_marginTop="24dp"
         android:onClick="onClick1"
-        android:padding="12dp"
         android:text="reject" />
     </LinearLayout>
 </LinearLayout>

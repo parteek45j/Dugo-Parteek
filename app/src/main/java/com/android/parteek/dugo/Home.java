@@ -151,19 +151,14 @@ public class Home extends AppCompatActivity
             ad.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    if(idConnected()) {
-                        logout();
-
-                    }else{
-                        Toast.makeText(Home.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
-                    }
-
+                    logout();
                 }
             });
             ad.setPositiveButton("No",null);
             ad.create().show();
 
         }
+        //AIzaSyBMT95IA9pMtC-iMlRbswKldAN5LFfy_6A
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -21,6 +21,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,7 +53,7 @@ public class Notification extends AppCompatActivity implements AdapterView.OnIte
         userBean=new UserBean();
         spOpt=(Spinner)findViewById(R.id.spinneropt);
         spCity=(Spinner)findViewById(R.id.spinnercity1);
-        text =(TextView)findViewById(R.id.textViewid);
+        text =(TextView)findViewById(R.id.textAddress);
         button=(AppCompatButton)findViewById(R.id.btn);
         adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item);
         adapter.add("Send this individual");
@@ -74,7 +78,32 @@ public class Notification extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
         views();
+        text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PlacePicker.IntentBuilder p=new PlacePicker.IntentBuilder();
+                try {
+                    Intent intent=p.build(Notification.this);
+                    startActivityForResult(intent,1);
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==1){
+            if(resultCode==RESULT_OK){
+                Place place=PlacePicker.getPlace(data,this);
+                String address=String.format("%s",place.getName()+"\n"+place.getAddress());
+                text.setText(address);
+            }
+        }
     }
 
     @Override
@@ -87,8 +116,6 @@ public class Notification extends AppCompatActivity implements AdapterView.OnIte
             spCity.setFocusable(false);
 
         }else if(option.contentEquals("Send by city")){
-            text.setEnabled(false);
-            text.setFocusable(false);
             spCity.setEnabled(true);
             spCity.setFocusable(true);
             adapter1=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item);
