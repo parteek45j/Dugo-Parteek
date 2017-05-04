@@ -153,11 +153,7 @@ public class Home extends AppCompatActivity
                 public void onClick(DialogInterface dialog, int which) {
                     if(idConnected()) {
                         logout();
-                        editor.clear();
-                        editor.commit();
-                        Intent i = new Intent(Home.this, Login.class);
-                        startActivity(i);
-                        finishAffinity();
+
                     }else{
                         Toast.makeText(Home.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
                     }
@@ -184,6 +180,11 @@ public class Home extends AppCompatActivity
                     String mess=object.getString("message");
                     if(succ>0){
                         Toast.makeText(Home.this, ""+mess, Toast.LENGTH_SHORT).show();
+                        editor.clear();
+                        editor.commit();
+                        Intent i = new Intent(Home.this, Login.class);
+                        startActivity(i);
+                        finishAffinity();
                     }else{
                         Toast.makeText(Home.this, ""+mess, Toast.LENGTH_SHORT).show();
                     }
