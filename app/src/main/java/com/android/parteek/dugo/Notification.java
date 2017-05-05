@@ -44,8 +44,8 @@ public class Notification extends AppCompatActivity implements AdapterView.OnIte
     String option;
     RequestQueue requestQueue;
     ProgressDialog pd;
-    SharedPreferences preferences;
-    SharedPreferences.Editor editor;
+    SharedPreferences preferences,preferences1;
+    SharedPreferences.Editor editor,editor1;
     int id;
     String date_time,wifi;
 
@@ -73,6 +73,8 @@ public class Notification extends AppCompatActivity implements AdapterView.OnIte
         date_time= DateFormat.getDateTimeInstance().format(new Date());
 
 
+        preferences1=getSharedPreferences(Util.pref_name,MODE_PRIVATE);
+        editor1=preferences1.edit();
 
     }
     @Override
@@ -94,6 +96,8 @@ public class Notification extends AppCompatActivity implements AdapterView.OnIte
                 }
             }
         });
+
+
 
     }
 
@@ -164,6 +168,8 @@ public class Notification extends AppCompatActivity implements AdapterView.OnIte
                     int idd=object.getInt("UserId");
                     String message=object.getString("message");
                     if(succ>0){
+                        editor1.putInt(Util.key_request,idd);
+                        editor1.commit();
                         Toast.makeText(Notification.this, ""+message , Toast.LENGTH_SHORT).show();
                     }else {
                         Toast.makeText(Notification.this, ""+message, Toast.LENGTH_SHORT).show();

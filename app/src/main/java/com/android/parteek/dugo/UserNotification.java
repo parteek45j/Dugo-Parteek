@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -41,6 +42,7 @@ public class UserNotification extends AppCompatActivity {
     int seeker,donor,request;
     ProgressDialog pd;
     String date;
+    String time;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +50,7 @@ public class UserNotification extends AppCompatActivity {
         Intent i=getIntent();
          seeker=i.getIntExtra("Seeker",0);
         request=i.getIntExtra("Request",0);
-
+        Log.e("idqq", String.valueOf(request));
         requestQueue = Volley.newRequestQueue(this);
         preferences=getSharedPreferences(Util.pref_name1,MODE_PRIVATE);
         editor=preferences.edit();
@@ -61,8 +63,12 @@ public class UserNotification extends AppCompatActivity {
 
     public void onClick(View view) {
         date= DateFormat.getDateTimeInstance().format(new Date());
-        Toast.makeText(this, "Accept", Toast.LENGTH_SHORT).show();
         putDonor();
+        Intent i=new Intent(this,Home.class);
+        startActivity(i);
+        Toast.makeText(this, "Accept", Toast.LENGTH_SHORT).show();
+        finishAffinity();
+
 
     }
 
@@ -73,7 +79,7 @@ public class UserNotification extends AppCompatActivity {
     }
     void putDonor(){
         pd.show();
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, Util.update, new Response.Listener<String>() {
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, Util.sendNoti1, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {

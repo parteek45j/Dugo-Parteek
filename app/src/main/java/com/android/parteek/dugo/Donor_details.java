@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Donor_details extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
+public class Donor_details extends AppCompatActivity implements AdapterView.OnItemLongClickListener, View.OnClickListener {
     int donorId;
     TextView textView;
     ListView listView;
@@ -52,6 +52,7 @@ public class Donor_details extends AppCompatActivity implements AdapterView.OnIt
         requestQueue=Volley.newRequestQueue(this);
         preferences=getSharedPreferences(Util.pref_name,MODE_PRIVATE);
         editor=preferences.edit();
+        textView.setOnClickListener(this);
 
     }
     @Override
@@ -59,14 +60,17 @@ public class Donor_details extends AppCompatActivity implements AdapterView.OnIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donor_details);
         views();
-        id=preferences.getInt(Util.key_donor,0);
-        boolean isReg=preferences.contains(Util.key_donor);
+        id=preferences.getInt(Util.key_request,0);
+        Log.e("idddddd", String.valueOf(id));
+        boolean isReg=preferences.contains(Util.key_request);
         //Toast.makeText(this, ""+id, Toast.LENGTH_SHORT).show();
         if(isReg) {
+            Toast.makeText(this, ""+id, Toast.LENGTH_SHORT).show();
             reteriveDonor();
         }else{
             textView.setText("No Donor Found Yet");
         }
+
     }
     void reteriveDonor(){
         pd.show();
@@ -77,13 +81,15 @@ public class Donor_details extends AppCompatActivity implements AdapterView.OnIt
                 try {
                     JSONObject object=new JSONObject(response);
                     JSONArray jsonArray=object.getJSONArray("students");
-                    String n="",p="",ge="",ci="";
+                    int see=0;String n="",p="",ge="",ci="",da="";
                     for(int j=0;j<jsonArray.length();j++){
                         JSONObject jsonObject=jsonArray.getJSONObject(j);
+                       // see=jsonObject.getInt("SeekerId");
+                      //  da=jsonObject.getString("Date");
                         n=jsonObject.getString("name");
                         p=jsonObject.getString("phone");
-                        ge=jsonObject.getString("gender");
-                        ci=jsonObject.getString("city");
+                       // ge=jsonObject.getString("gender");
+                        //ci=jsonObject.getString("city");
                         arrayList.add(new UserBean(0,n,p,ge,ci,"Not Available","Not Available","Not Available"));
                     }
                     userAdapter=new UserAdapter(Donor_details.this,R.layout.demo,arrayList);
@@ -107,7 +113,7 @@ public class Donor_details extends AppCompatActivity implements AdapterView.OnIt
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map=new HashMap<>();
-                map.put("donor", String.valueOf(id));
+                map.put("requestID", String.valueOf(id));
                 return map;
             }
         };
@@ -154,5 +160,12 @@ public class Donor_details extends AppCompatActivity implements AdapterView.OnIt
     }
     void deleteUser(){
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        editor.clear();
+        editor.commit();
+        Toast.makeText(this, "Cleared", Toast.LENGTH_SHORT).show();
     }
 }
