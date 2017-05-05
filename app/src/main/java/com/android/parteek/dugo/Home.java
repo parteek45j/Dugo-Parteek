@@ -2,11 +2,15 @@ package com.android.parteek.dugo;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -38,7 +42,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Home extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+
+    BroadcastReceiver receiver=new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action=intent.getAction();
+            if(action.equals(Intent.ACTION_PACKAGE_REMOVED)){
+                Toast.makeText(context, "hello removed", Toast.LENGTH_SHORT).show();
+            }if(intent.getBooleanExtra("state",false)){
+                Toast.makeText(context, "Airplane mode Changed", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    };
     TextView tname,temail;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
@@ -47,9 +64,11 @@ public class Home extends AppCompatActivity
     int id;
     ProgressDialog pd;
     RequestQueue requestQueue;
+    String wifi;
     void views(){
         tname=(TextView)findViewById(R.id.textView2);
-        //temail=(TextView)findViewById(R.id.textEmail);
+        temail=(TextView)findViewById(R.id.textEmail);
+        temail.setOnClickListener(this);
         preferences=getSharedPreferences(Util.pref_name1,MODE_PRIVATE);
         editor=preferences.edit();
       //  String name=preferences.getString(Util.key_name,"");
@@ -61,6 +80,7 @@ public class Home extends AppCompatActivity
         pd.setCancelable(false);
         requestQueue= Volley.newRequestQueue(this);
         //temail.setText(email);
+
     }
 
     @Override
@@ -88,6 +108,15 @@ public class Home extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         views();
+        IntentFilter filter=new IntentFilter();
+        filter.addAction(Intent.ACTION_DATE_CHANGED);
+        filter.addAction(Intent.ACTION_MY_PACKAGE_REPLACED);
+        filter.addAction(Intent.ACTION_PACKAGE_DATA_CLEARED);
+        filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+        filter.addAction(Intent.ACTION_PACKAGE_FULLY_REMOVED);
+        filter.addAction(Intent.ACTION_TIME_CHANGED);
+        filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+        registerReceiver(receiver,filter);
     }
     boolean idConnected(){
         connectivityManager=(ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
@@ -139,6 +168,8 @@ public class Home extends AppCompatActivity
 
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
+            Intent i=new Intent(this,Donor_details.class);
+            startActivity(i);
 
         } else if (id == R.id.nav_slideshow) {
 
@@ -206,5 +237,10 @@ public class Home extends AppCompatActivity
             }
         };
         requestQueue.add(stringRequest);
+    }
+
+    @Override
+    public void onClick(View v) {
+     //   temail.setText(wifi);
     }
 }

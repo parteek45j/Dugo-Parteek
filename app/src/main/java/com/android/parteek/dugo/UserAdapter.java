@@ -40,7 +40,7 @@ public class UserAdapter extends ArrayAdapter<UserBean> {
 
         UserBean userBean=arrayList.get(position);
         t1.setText(userBean.getName());
-        t2.setText(userBean.getCity());
+        t2.setText(userBean.getPhone());
         return view;
     }
 }

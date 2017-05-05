@@ -6,25 +6,22 @@
     android:background="@color/color"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.android.parteek.dugo.Home"
-    tools:showIn="@layout/app_bar_home">
-
-
+    tools:context="com.android.parteek.dugo.Donor_details">
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/detials"
+        android:text="Donor's Details"
+        android:textSize="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="70dp"
-        android:text="TextView"
-        android:textSize="20dp" />
-    <TextView
-        android:id="@+id/textEmail"
+        android:layout_marginBottom="20dp"/>
+
+    <ListView
+        android:id="@+id/donorlist"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
-        android:text="TextView"
-        android:textSize="20dp" />
+        android:layout_height="match_parent">
+
+    </ListView>
+
+
 </LinearLayout>

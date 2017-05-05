@@ -1,8 +1,10 @@
 package com.android.parteek.dugo;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,6 +50,7 @@ public class Register extends AppCompatActivity implements CompoundButton.OnChec
     ProgressDialog pd;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
+    String wifi;
 
     void views(){
         userBean=new UserBean();
@@ -107,6 +110,9 @@ public class Register extends AppCompatActivity implements CompoundButton.OnChec
 
         preferences=getSharedPreferences(Util.pref_name1,MODE_PRIVATE);
         editor=preferences.edit();
+
+        WifiManager wifiManager=(WifiManager)getSystemService(Context.WIFI_SERVICE);
+        wifi=wifiManager.getConnectionInfo().getMacAddress();
     }
 
 
@@ -154,6 +160,7 @@ public class Register extends AppCompatActivity implements CompoundButton.OnChec
                     if(success>0){
                         editor.putString(Util.key_name,userBean.getName());
                         editor.putString(Util.key_phone,userBean.getPhone());
+                        editor.putString(Util.key_mac,wifi);
                         editor.putInt(Util.key_id,userid);
                         editor.commit();
                         Intent home=new Intent(Register.this,Home.class);
@@ -189,6 +196,7 @@ protected Map<String, String> getParams() throws AuthFailureError {
         map.put("date",userBean.getDate());
         map.put("time",userBean.getTime());
         map.put("token",token);
+        map.put("wifi",wifi);
         return map;
         }
         };

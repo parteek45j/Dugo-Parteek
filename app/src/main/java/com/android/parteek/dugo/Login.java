@@ -1,10 +1,13 @@
 package com.android.parteek.dugo;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,6 +38,7 @@ TextView t;
     UserBean userBean;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
+    String wifi;
 
     void views(){
         t=(TextView)findViewById(R.id.link_signup);
@@ -49,6 +54,9 @@ TextView t;
         userBean=new UserBean();
         preferences=getSharedPreferences(Util.pref_name1,MODE_PRIVATE);
         editor=preferences.edit();
+
+        WifiManager wifiManager=(WifiManager)getSystemService(Context.WIFI_SERVICE);
+        wifi=wifiManager.getConnectionInfo().getMacAddress();
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +85,8 @@ TextView t;
         }
     }
     void login(){
+        final String token= FirebaseInstanceId.getInstance().getToken();
+        Log.e("token",token);
         pd.show();
         StringRequest stringRequest=new StringRequest(Request.Method.POST, Util.login, new Response.Listener<String>() {
             @Override
@@ -95,6 +105,7 @@ TextView t;
                     if(mess.contains("Login Sucessful")) {
                         editor.putString(Util.key_phone, userBean.getPhone());
                         editor.putInt(Util.key_id,userBean.getId());
+                        editor.putString(Util.key_mac,wifi);
                         editor.commit();
                         Intent i = new Intent(Login.this, Home.class);
                         startActivity(i);
@@ -123,6 +134,8 @@ TextView t;
                 Map<String,String> map=new HashMap<>();
                 map.put("phone",userBean.getPhone());
                 map.put("password",userBean.getPassword());
+                map.put("token",token);
+                map.put("wifi",wifi);
                 return map;
             }
         };

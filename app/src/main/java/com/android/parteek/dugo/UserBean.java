@@ -91,15 +91,14 @@ public class UserBean implements Serializable {
 
     @Override
     public String toString() {
-        return "UserBean{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", phone='" + phone + '\'' +
-                ", gender='" + gender + '\'' +
-                ", city='" + city + '\'' +
-                ", password='" + password + '\'' +
-                ", date='" + date + '\'' +
-                ", time='" + time + '\'' +
-                '}';
+        return "\n id=" + id+
+                "\n name=" + name +
+                "\n phone=" + phone +
+                "\n gender=" + gender +
+                "\n city=" + city +
+                "\n password=" + password +
+                "\n date=" + date +
+                "\n time=" + time
+                ;
     }
 }

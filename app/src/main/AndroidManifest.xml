@@ -3,7 +3,9 @@
     package="com.android.parteek.dugo">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:name=".MyApp"
@@ -47,9 +49,15 @@
         <activity
             android:name=".Notification"
             android:theme="@style/AppTheme" />
-        <activity android:name=".UserNotification"></activity>
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBMT95IA9pMtC-iMlRbswKldAN5LFfy_6A"/>
+        <activity android:name=".UserNotification"
+            android:theme="@style/AppTheme"/>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBMT95IA9pMtC-iMlRbswKldAN5LFfy_6A" />
+
+        <activity android:name=".Donor_details"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

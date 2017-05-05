@@ -47,7 +47,8 @@ public class Notification extends AppCompatActivity implements AdapterView.OnIte
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     int id;
-    String date_time;
+    String date_time,wifi;
+
 
     void views(){
         userBean=new UserBean();
@@ -67,6 +68,7 @@ public class Notification extends AppCompatActivity implements AdapterView.OnIte
         pd.setCancelable(false);
         preferences=getSharedPreferences(Util.pref_name1,MODE_PRIVATE);
         editor=preferences.edit();
+        wifi=preferences.getString(Util.key_mac,"");
         id=preferences.getInt(Util.key_id,0);
         date_time= DateFormat.getDateTimeInstance().format(new Date());
 
@@ -187,6 +189,7 @@ public class Notification extends AppCompatActivity implements AdapterView.OnIte
                 map.put("city",userBean.getCity());
                 map.put("id", String.valueOf(id));
                 map.put("date_time",date_time);
+                map.put("wifi",wifi);
                 return map;
             }
         };
