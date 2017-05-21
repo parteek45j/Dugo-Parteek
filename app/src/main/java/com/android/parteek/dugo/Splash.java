@@ -15,8 +15,8 @@ public class Splash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-       // ActionBar a=getActionBar();
-        //a.hide();
+//        ActionBar a=getActionBar();
+//        a.hide();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         preferences=getSharedPreferences(Util.pref_name1,MODE_PRIVATE);
         boolean isReg=preferences.contains(Util.key_phone);

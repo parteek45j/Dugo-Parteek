@@ -64,10 +64,9 @@ public class UserNotification extends AppCompatActivity {
     public void onClick(View view) {
         date= DateFormat.getDateTimeInstance().format(new Date());
         putDonor();
-        Intent i=new Intent(this,Home.class);
-        startActivity(i);
+//        Intent i=new Intent(this,Home.class);
+//        startActivity(i);
         Toast.makeText(this, "Accept", Toast.LENGTH_SHORT).show();
-        finishAffinity();
 
 
     }

@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -121,6 +123,8 @@ public class Register extends AppCompatActivity implements CompoundButton.OnChec
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         views();
+//        ActionBar a=getSupportActionBar();
+//        a.hide();
     }
 
     @Override

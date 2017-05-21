@@ -14,6 +14,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -56,7 +57,7 @@ public class Home extends AppCompatActivity
 
         }
     };
-    TextView tname,temail;
+    TextView tname,temail,tHname,tHphone;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     ConnectivityManager connectivityManager;
@@ -64,21 +65,9 @@ public class Home extends AppCompatActivity
     int id;
     ProgressDialog pd;
     RequestQueue requestQueue;
-    String wifi;
+    String wifi,phone,name;
     void views(){
-        tname=(TextView)findViewById(R.id.textView2);
-        temail=(TextView)findViewById(R.id.textEmail);
-        temail.setOnClickListener(this);
-        preferences=getSharedPreferences(Util.pref_name1,MODE_PRIVATE);
-        editor=preferences.edit();
-      //  String name=preferences.getString(Util.key_name,"");
-        String phone=preferences.getString(Util.key_phone,"");
-        id=preferences.getInt(Util.key_id,0);
-        tname.setText(phone);
-        pd=new ProgressDialog(this);
-        pd.setMessage("Logging Out....");
-        pd.setCancelable(false);
-        requestQueue= Volley.newRequestQueue(this);
+
         //temail.setText(email);
 
     }
@@ -107,6 +96,28 @@ public class Home extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        tname=(TextView)findViewById(R.id.textView2);
+        temail=(TextView)findViewById(R.id.textEmail);
+        temail.setOnClickListener(this);
+        preferences=getSharedPreferences(Util.pref_name1,MODE_PRIVATE);
+        editor=preferences.edit();
+        name=preferences.getString(Util.key_name,"");
+        phone=preferences.getString(Util.key_phone,"");
+        id=preferences.getInt(Util.key_id,0);
+        tname.setText(phone);
+
+        pd=new ProgressDialog(this);
+        pd.setMessage("Logging Out....");
+        pd.setCancelable(false);
+        requestQueue= Volley.newRequestQueue(this);
+
+        View nv=navigationView.getHeaderView(0);
+        tHphone=(TextView)nv.findViewById(R.id.textEmail12);
+        tHname=(TextView)nv.findViewById(R.id.textName12);
+        Toast.makeText(this, ""+name+phone, Toast.LENGTH_SHORT).show();
+        tHname.setText(name);
+        tHphone.setText(phone);
+
         views();
         IntentFilter filter=new IntentFilter();
         filter.addAction(Intent.ACTION_DATE_CHANGED);
@@ -162,17 +173,33 @@ public class Home extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            Intent i=new Intent(this,Notification.class);
-            startActivity(i);
+        if (id == R.id.nav_home) {
+            HomeFragment frag= new HomeFragment();
+            FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragme,frag);
+            fragmentTransaction.commit();
+        }
+        else if (id == R.id.nav_camera) {
+
+            NotificationFrag frag=new NotificationFrag();
+            FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragme,frag);
+            fragmentTransaction.commit();
+//            Intent i=new Intent(this,Notification.class);
+//            startActivity(i);
 
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-            Intent i=new Intent(this,Donor_details.class);
-            startActivity(i);
+            DonorDetailsFragment frag= new DonorDetailsFragment();
+            FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragme,frag);
+            fragmentTransaction.commit();
+//            Intent i=new Intent(this,Donor_details.class);
+//            startActivity(i);
 
         } else if (id == R.id.nav_slideshow) {
 
+//
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_logout) {

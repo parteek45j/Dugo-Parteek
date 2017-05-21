@@ -12,6 +12,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 
+import com.android.parteek.dugo.DonorDetailsFragment;
 import com.android.parteek.dugo.Donor_details;
 import com.android.parteek.dugo.Home;
 import com.android.parteek.dugo.R;
@@ -130,7 +131,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
 
-                intent = new Intent(this, Donor_details.class);
+                intent = new Intent(this, Home.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 int id= Integer.parseInt(msgs[1]);
                 editor.putInt(Util.key_donor,id);

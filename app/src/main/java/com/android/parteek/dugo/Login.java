@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -63,6 +65,8 @@ TextView t;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         views();
+//        ActionBar a=getSupportActionBar();
+//        a.hide();
     }
 
     @Override
@@ -100,12 +104,15 @@ TextView t;
                     for(int y=0;y<jsonArray.length();y++){
                         JSONObject jsonObject=jsonArray.getJSONObject(y);
                         id=jsonObject.getInt("ID");
+                        n=jsonObject.getString("name");
                         userBean.setId(id);
+                        userBean.setName(n);
                     }
                     if(mess.contains("Login Sucessful")) {
                         editor.putString(Util.key_phone, userBean.getPhone());
                         editor.putInt(Util.key_id,userBean.getId());
                         editor.putString(Util.key_mac,wifi);
+                        editor.putString(Util.key_name,userBean.getName());
                         editor.commit();
                         Intent i = new Intent(Login.this, Home.class);
                         startActivity(i);
