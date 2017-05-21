@@ -8,21 +8,32 @@ import java.io.Serializable;
 
 public class UserBean implements Serializable {
     int id;
-    String name,phone,gender,city,password,date,time;
+    String name,phone,gender,city,age,blooddGroup,password,date,time;
 
     public UserBean() {
 
     }
 
-    public UserBean(int id, String name, String phone, String gender, String city, String password, String date, String time) {
+    public UserBean(int id, String name, String phone, String gender, String city,String blooddGroup,String age, String password, String date, String time) {
         this.id = id;
         this.name = name;
         this.phone = phone;
         this.gender = gender;
         this.city = city;
+        this.age=age;
+        this.blooddGroup=blooddGroup;
         this.password = password;
+
         this.date = date;
         this.time = time;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
     }
 
     public int getId() {
@@ -89,6 +100,14 @@ public class UserBean implements Serializable {
         this.time = time;
     }
 
+    public String getBlooddGroup() {
+        return blooddGroup;
+    }
+
+    public void setBloodGroup(String blooddGroup) {
+        this.blooddGroup = blooddGroup;
+    }
+
     @Override
     public String toString() {
         return "\n id=" + id+
@@ -96,6 +115,8 @@ public class UserBean implements Serializable {
                 "\n phone=" + phone +
                 "\n gender=" + gender +
                 "\n city=" + city +
+                "\n age=" + age +
+                "\n bloodGroup=" + blooddGroup +
                 "\n password=" + password +
                 "\n date=" + date +
                 "\n time=" + time

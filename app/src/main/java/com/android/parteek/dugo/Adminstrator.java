@@ -68,7 +68,7 @@ public class Adminstrator extends AppCompatActivity implements AdapterView.OnIte
                         da=jsonObject.getString("date");
                         ti=jsonObject.getString("time");
 
-                        arrayList.add(new UserBean(id,n,p,ge,ci,pass,da,ti));
+                        arrayList.add(new UserBean(id,n,p,ge,ci,"","",pass,da,ti));
                     }
                     userAdapter=new UserAdapter(Adminstrator.this,R.layout.demo,arrayList);
                     Log.e("tag",userBean.toString());

@@ -45,18 +45,6 @@ import java.util.Map;
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
-    BroadcastReceiver receiver=new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action=intent.getAction();
-            if(action.equals(Intent.ACTION_PACKAGE_REMOVED)){
-                Toast.makeText(context, "hello removed", Toast.LENGTH_SHORT).show();
-            }if(intent.getBooleanExtra("state",false)){
-                Toast.makeText(context, "Airplane mode Changed", Toast.LENGTH_SHORT).show();
-            }
-
-        }
-    };
     TextView tname,temail,tHname,tHphone;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
@@ -119,15 +107,6 @@ public class Home extends AppCompatActivity
         tHphone.setText(phone);
 
         views();
-        IntentFilter filter=new IntentFilter();
-        filter.addAction(Intent.ACTION_DATE_CHANGED);
-        filter.addAction(Intent.ACTION_MY_PACKAGE_REPLACED);
-        filter.addAction(Intent.ACTION_PACKAGE_DATA_CLEARED);
-        filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
-        filter.addAction(Intent.ACTION_PACKAGE_FULLY_REMOVED);
-        filter.addAction(Intent.ACTION_TIME_CHANGED);
-        filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
-        registerReceiver(receiver,filter);
     }
     boolean idConnected(){
         connectivityManager=(ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);

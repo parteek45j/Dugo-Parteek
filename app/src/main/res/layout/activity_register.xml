@@ -7,18 +7,35 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="56dp"
+    android:paddingTop="30dp"
     android:paddingLeft="24dp"
     android:background="@color/color"
     android:paddingRight="24dp">
-
-    <ImageView android:src="@mipmap/ic_launcher"
+    <TextView
         android:layout_width="wrap_content"
-        android:layout_height="72dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/col"
+        android:text="REGISTRATION"
+        android:layout_gravity="center"
+        android:textSize="20dp"/>
+    <!--<view-->
+        <!--android:layout_width="140dp"-->
+        <!--android:layout_height="2dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:background="@color/col"/>-->
+
+    <ImageView android:background="@drawable/icon1"
+        android:layout_width="80dp"
+        android:layout_marginTop="30dp"
+        android:layout_height="80dp"
         android:layout_marginBottom="24dp"
         android:layout_gravity="center_horizontal" />
 
     <!-- Email Label -->
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:background="@color/col"-->
+        <!--android:layout_height="5dp"/>-->
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -81,6 +98,74 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp">>
     </Spinner>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select your age : "/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:clipChildren="false">
+
+
+                <com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar
+                    android:id="@+id/rangeSeekbar2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    data_type="_integer"/>
+
+
+                <TextView
+                    android:id="@+id/textMin2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="18"
+                    android:layout_below="@id/rangeSeekbar2"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="10dp"
+                    android:textSize="16dp"
+                    android:textColor="#000"/>
+
+                <TextView
+                    android:id="@+id/textMax2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="60"
+                    android:layout_below="@id/rangeSeekbar2"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:textSize="16dp"
+                    android:textColor="#000"
+                    android:layout_alignParentRight="true"/>
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/input_blood"
+        android:layout_marginTop="8dp"
+        android:dropDownWidth="50dp"
+        android:layout_marginBottom="8dp">
+    </Spinner>
+
     <!-- Password Label -->
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -106,13 +191,18 @@
         android:padding="12dp"
         android:text="Signup"/>
 
-    <TextView android:id="@+id/link_signup"
+    <TextView android:id="@+id/link_signin"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:text="No account yet? Create one"
+        android:text="Already Registered"
         android:gravity="center"
         android:textSize="16dip"/>
+    <View
+        android:layout_width="140dp"
+        android:layout_height="1dp"
+        android:background="@color/col1"
+        android:layout_gravity="center"
+        android:layout_marginBottom="24dp"/>
 
 </LinearLayout>
 </ScrollView>

@@ -28,6 +28,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.crystal.crystalrangeseekbar.interfaces.OnSeekbarChangeListener;
+import com.crystal.crystalrangeseekbar.interfaces.OnSeekbarFinalValueListener;
+import com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
@@ -39,23 +42,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Register extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
-    TextView t;
+    TextView t,t2;
     EditText name,phone,password;
     Spinner city;
     RadioButton male,female;
     Button signup;
     UserBean userBean;
     ArrayList<UserBean> beanArrayList;
-    ArrayAdapter<String> cityAdapter;
+    ArrayAdapter<String> cityAdapter,bloodAadapter;
     RequestQueue requestQueue;
     String date,time;
     ProgressDialog pd;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     String wifi;
+    Spinner bloodgroup;
+    TextView tvMin ;
 
     void views(){
         userBean=new UserBean();
+        t2=(TextView)findViewById(R.id.link_signin);
+        t2.setOnClickListener(this);
 
         beanArrayList=new ArrayList<>();
         name=(EditText)findViewById(R.id.input_name);
@@ -64,6 +71,7 @@ public class Register extends AppCompatActivity implements CompoundButton.OnChec
 
 
         password=(EditText)findViewById(R.id.input_password);
+        setRangeSeekbar2();
 
 
         city=(Spinner) findViewById(R.id.input_city);
@@ -115,6 +123,35 @@ public class Register extends AppCompatActivity implements CompoundButton.OnChec
 
         WifiManager wifiManager=(WifiManager)getSystemService(Context.WIFI_SERVICE);
         wifi=wifiManager.getConnectionInfo().getMacAddress();
+        bloodgroup  = (Spinner)findViewById(R.id.input_blood);
+
+        bloodAadapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item);
+        bloodAadapter.add("---Select BloodGroup---");
+        bloodAadapter.add("A+");
+        bloodAadapter.add("A-");
+        bloodAadapter.add("B+");
+        bloodAadapter.add("B-");
+        bloodAadapter.add("O+");
+        bloodAadapter.add("O-");
+        bloodAadapter.add("AB+");
+        bloodAadapter.add("AB-");
+        bloodgroup.setAdapter(bloodAadapter);
+        bloodgroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position!=0){
+                    userBean.setBloodGroup(bloodAadapter.getItem(position));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+
+        });
+
     }
 
 
@@ -141,6 +178,8 @@ public class Register extends AppCompatActivity implements CompoundButton.OnChec
 
     @Override
     public void onClick(View v) {
+        int id=v.getId();
+        if(id==R.id.input_signup){
         userBean.setName(name.getText().toString().trim());
         userBean.setPhone(phone.getText().toString().trim());
         userBean.setPassword(password.getText().toString().trim());
@@ -148,8 +187,14 @@ public class Register extends AppCompatActivity implements CompoundButton.OnChec
         userBean.setTime(time);
         Log.e("details",userBean.toString());
         insert();
+        }else if(id==R.id.link_signin){
+            Intent i=new Intent(this,Login.class);
+            startActivity(i);
+            finish();
+        }
     }
     void insert(){
+        Log.e("details",userBean.toString());
         final String token= FirebaseInstanceId.getInstance().getToken();
         Log.e("Token",token.toString());
         pd.show();
@@ -196,6 +241,8 @@ protected Map<String, String> getParams() throws AuthFailureError {
         map.put("phone",userBean.getPhone());
         map.put("gender",userBean.getGender());
         map.put("city",userBean.getCity());
+        map.put("blood",userBean.getBlooddGroup());
+        map.put("age",userBean.getAge());
         map.put("password",userBean.getPassword());
         map.put("date",userBean.getDate());
         map.put("time",userBean.getTime());
@@ -206,4 +253,34 @@ protected Map<String, String> getParams() throws AuthFailureError {
         };
         requestQueue.add(stringRequest);
         }
+
+
+    private void setRangeSeekbar2() {
+
+        final CrystalSeekbar seekbar = (CrystalSeekbar) findViewById(R.id.rangeSeekbar2);
+
+        seekbar.setMinValue(18);
+        seekbar.setMaxValue(60);
+        tvMin = (TextView) findViewById(R.id.textMin2);
+        userBean.setAge("18");
+        seekbar.setOnSeekbarChangeListener(new OnSeekbarChangeListener() {
+            @Override
+            public void valueChanged(Number value) {
+                tvMin.setText(String.valueOf(value));
+                Log.e("hj",(String)tvMin.getText());
+            }
+        });
+
+        seekbar.setOnSeekbarFinalValueListener(new OnSeekbarFinalValueListener() {
+            @Override
+            public void finalValue(Number value) {
+                userBean.setAge((String) tvMin.getText()
+
+                );
+
+            }
+        });
+
+
+    }
         }

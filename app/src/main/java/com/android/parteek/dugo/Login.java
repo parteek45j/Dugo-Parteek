@@ -1,10 +1,15 @@
 package com.android.parteek.dugo;
 
+import android.*;
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,6 +43,8 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,7 +52,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 TextView t;
     EditText textemail,textpass;
     Button loginBtn;
-    TextView textFb;
+  //  TextView textFb;
     LoginButton loginButton;
     RequestQueue requestQueue;
     ProgressDialog pd;
@@ -56,10 +63,10 @@ TextView t;
     CallbackManager callbackManager;
     AccessTokenTracker accessTokenTracker;
     ProfileTracker profileTracker;
-
+    String name,image,date,time;
     void views(){
         t=(TextView)findViewById(R.id.link_signup);
-        textFb=(TextView)findViewById(R.id.faceb);
+//        textFb=(TextView)findViewById(R.id.faceb);
         loginButton=(LoginButton)findViewById(R.id.loginButton);
         t.setOnClickListener(this);
         textemail=(EditText)findViewById(R.id.input_email);
@@ -84,7 +91,11 @@ TextView t;
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this);
         setContentView(R.layout.activity_login);
+        permission();
         views();
+        date= DateFormat.getDateInstance().format(new Date());
+        time= DateFormat.getTimeInstance().format(new Date());
+        Profile profile=Profile.getCurrentProfile();
         accessTokenTracker=new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
@@ -103,14 +114,15 @@ TextView t;
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                insertFacebook();
                 Profile profile=Profile.getCurrentProfile();
                 nextActivity(profile);
-                textFb.setText("Login Success\n"+loginResult.getAccessToken().getUserId());
+                //textFb.setText("Login Success\n"+loginResult.getAccessToken().getUserId());
             }
 
             @Override
             public void onCancel() {
-                textFb.setText("Login Canceled");
+                //textFb.setText("Login Canceled");
             }
 
             @Override
@@ -144,6 +156,9 @@ TextView t;
 
     void nextActivity(Profile profile){
         if(profile!=null){
+            editor.putString(Util.key_name,profile.getName());
+            editor.putString(Util.key_image,profile.getProfilePictureUri(200,200).toString());
+            editor.commit();
             Intent intent=new Intent(this,FacebookLogin.class);
             intent.putExtra("name",profile.getName());
             intent.putExtra("picture",profile.getProfilePictureUri(200,200).toString());
@@ -154,6 +169,8 @@ TextView t;
 
     @Override
     public void onClick(View v) {
+        name=preferences.getString(Util.key_name,"");
+      //  Toast.makeText(this, ""+name, Toast.LENGTH_SHORT).show();
         int id=v.getId();
         if(id==R.id.link_signup) {
             Intent i = new Intent(this, Register.class);
@@ -209,7 +226,7 @@ TextView t;
                 }catch (Exception e){
                     e.printStackTrace();
                     pd.dismiss();
-                    Toast.makeText(Login.this, "Exception", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, "Exception"+e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -231,5 +248,82 @@ TextView t;
         };
         requestQueue.add(stringRequest);
     }
+void insertFacebook(){
 
+    name=preferences.getString(Util.key_name,"");
+
+    final String token= FirebaseInstanceId.getInstance().getToken();
+    StringRequest stringRequest=new StringRequest(Request.Method.POST, Util.insertFB, new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response) {
+            try {
+                JSONObject jsonObject=new JSONObject(response);
+                String message=jsonObject.getString("message");
+                int idd=jsonObject.getInt("UserId");
+                editor.putInt(Util.key_id,idd);
+                if(message.contains("Login Sucessful")){
+                    Intent i=new Intent(Login.this,Home.class);
+                    startActivity(i);
+                    Toast.makeText(Login.this, "Success", Toast.LENGTH_SHORT).show();
+                }else if(message.contains("Login Failure")){
+                    Profile profile=Profile.getCurrentProfile();
+                        nextActivity(profile);
+                    //Toast.makeText(Login.this, "Fail", Toast.LENGTH_SHORT).show();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
+    }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+
+        }
+    }){
+        @Override
+        protected Map<String, String> getParams() throws AuthFailureError {
+            Map<String,String> map=new HashMap<>();
+            map.put("name",name);
+            map.put("token",token);
+            map.put("wifi",wifi);
+            map.put("date",date);
+            map.put("time",time);
+            return map;
+        }
+    };
+    requestQueue.add(stringRequest);
+}
+void permission(){
+    ActivityCompat.requestPermissions(Login.this, new String[]{Manifest.permission.READ_PHONE_STATE},1);
+    ActivityCompat.requestPermissions(Login.this, new String[]{Manifest.permission.INTERNET},2);
+    ActivityCompat.requestPermissions(Login.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},3);
+}
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case 1:{
+                if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
+                 //   Toast.makeText(this, "yayayay", Toast.LENGTH_SHORT).show();
+                }else{
+                   // Toast.makeText(this, "boooooo", Toast.LENGTH_SHORT).show();
+                }
+            }
+            case 2:{
+                if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
+                    //Toast.makeText(this, "yayayay", Toast.LENGTH_SHORT).show();
+                }else{
+                    //Toast.makeText(this, "boooooo", Toast.LENGTH_SHORT).show();
+                }
+            }
+            case 3:{
+                if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
+                    //Toast.makeText(this, "yayayay", Toast.LENGTH_SHORT).show();
+                }else{
+                //    Toast.makeText(this, "boooooo", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
 }

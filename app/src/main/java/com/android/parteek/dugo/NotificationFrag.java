@@ -43,7 +43,7 @@ import static android.content.Context.MODE_PRIVATE;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NotificationFrag extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+public class NotificationFrag extends Fragment implements View.OnClickListener {
 
     Spinner spOpt;
     Spinner spCity;
@@ -87,11 +87,46 @@ public class NotificationFrag extends Fragment implements AdapterView.OnItemSele
 
 
         adapter=new ArrayAdapter<String>(view.getContext(),android.R.layout.simple_spinner_dropdown_item);
-        adapter.add("Send this individual");
-        adapter.add("Send by city");
+        adapter.add("Ludhiana");
+        adapter.add("Jalandhar");
+        adapter.add("Amritsar");
         spOpt.setAdapter(adapter);
 //        spOpt.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) getActivity());
-        spOpt.setOnItemSelectedListener(this);
+        spOpt.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                userBean.setCity(adapter.getItem(position));
+                //Toast.makeText(getContext(), ""+userBean.getCity(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        adapter1=new ArrayAdapter<String>(view.getContext(),android.R.layout.simple_spinner_dropdown_item);
+        adapter1.add("A+");
+        adapter1.add("A-");
+        adapter1.add("B+");
+        adapter1.add("B-");
+        adapter1.add("O+");
+        adapter1.add("O-");
+        adapter1.add("AB+");
+        adapter1.add("AB-");
+        spCity.setAdapter(adapter1);
+        spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                userBean.setBloodGroup(adapter1.getItem(position));
+                //Toast.makeText(getContext(), ""+userBean.getBlooddGroup(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         button.setOnClickListener(this);
         requestQueue= Volley.newRequestQueue(getActivity());
@@ -135,42 +170,6 @@ public class NotificationFrag extends Fragment implements AdapterView.OnItemSele
         }
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        option=adapter.getItem(position);
-        if(option.contentEquals("Send this individual")){
-            text.setEnabled(true);
-            text.setFocusable(true);
-            spCity.setEnabled(false);
-            spCity.setFocusable(false);
-
-        }else if(option.contentEquals("Send by city")){
-            spCity.setEnabled(true);
-            spCity.setFocusable(true);
-            adapter1=new ArrayAdapter<String>(view.getContext(),android.R.layout.simple_spinner_dropdown_item);
-            adapter1.add("Ludhiana");
-            adapter1.add("Amritsar");
-            adapter1.add("Jalandhar");
-            spCity.setAdapter(adapter1);
-            spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    userBean.setCity(adapter1.getItem(position));
-                    Toast.makeText(getContext(), ""+userBean.getCity(), Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
 
     @Override
     public void onClick(View v) {
@@ -215,6 +214,7 @@ public class NotificationFrag extends Fragment implements AdapterView.OnItemSele
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map=new HashMap<>();
                 map.put("city",userBean.getCity());
+                map.put("blood",userBean.getBlooddGroup());
                 map.put("id", String.valueOf(id));
                 map.put("date_time",date_time);
                 map.put("wifi",wifi);

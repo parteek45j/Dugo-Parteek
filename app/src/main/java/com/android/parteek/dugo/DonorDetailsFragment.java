@@ -84,7 +84,7 @@ public class DonorDetailsFragment extends Fragment {
         boolean isReg=preferences.contains(Util.key_request);
         //Toast.makeText(this, ""+id, Toast.LENGTH_SHORT).show();
         if(isReg) {
-            Toast.makeText(getActivity(), ""+id, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getActivity(), ""+id, Toast.LENGTH_SHORT).show();
             reteriveDonor();
         }else{
             textView.setText("No Donor Found Yet");
@@ -111,7 +111,7 @@ public class DonorDetailsFragment extends Fragment {
                         p=jsonObject.getString("phone");
                         // ge=jsonObject.getString("gender");
                         //ci=jsonObject.getString("city");
-                        arrayList.add(new UserBean(0,n,p,ge,ci,"Not Available","Not Available","Not Available"));
+                        arrayList.add(new UserBean(0,n,p,ge,ci,"","","Not Available","Not Available","Not Available"));
                     }
                     userAdapter=new UserAdapter(getActivity(),R.layout.demo,arrayList);
                     listView.setAdapter(userAdapter);

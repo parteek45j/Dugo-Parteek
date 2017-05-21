@@ -90,7 +90,7 @@ public class Donor_details extends AppCompatActivity implements AdapterView.OnIt
                         p=jsonObject.getString("phone");
                        // ge=jsonObject.getString("gender");
                         //ci=jsonObject.getString("city");
-                        arrayList.add(new UserBean(0,n,p,ge,ci,"Not Available","Not Available","Not Available"));
+                        arrayList.add(new UserBean(0,n,p,ge,ci,"","","Not Available","Not Available","Not Available"));
                     }
                     userAdapter=new UserAdapter(Donor_details.this,R.layout.demo,arrayList);
                     listView.setAdapter(userAdapter);
