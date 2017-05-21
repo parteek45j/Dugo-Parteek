@@ -22,16 +22,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Register"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-           />
+        <activity
+            android:name=".Register"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".Home"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".Login"
-            android:theme="@style/AppTheme"
-             />
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <service android:name=".fcm.MyFirebaseMessagingService">
             <intent-filter>
@@ -52,15 +51,29 @@
         <activity
             android:name=".Notification"
             android:theme="@style/Theme.AppCompat" />
-        <activity android:name=".UserNotification"
-            android:theme="@style/Theme.AppCompat"/>
+        <activity
+            android:name=".UserNotification"
+            android:theme="@style/Theme.AppCompat" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBMT95IA9pMtC-iMlRbswKldAN5LFfy_6A" />
 
-        <activity android:name=".Donor_details"
-            android:theme="@style/Theme.AppCompat"></activity>
+        <activity
+            android:name=".Donor_details"
+            android:theme="@style/Theme.AppCompat" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity android:name=".FacebookLogin"
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+        <provider
+            android:authorities="com.facebook.app.FacebookContentProvider"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true"/>
+
     </application>
 
 </manifest>

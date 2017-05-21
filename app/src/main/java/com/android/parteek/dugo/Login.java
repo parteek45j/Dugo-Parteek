@@ -23,6 +23,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
@@ -35,15 +45,22 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 TextView t;
     EditText textemail,textpass;
     Button loginBtn;
+    TextView textFb;
+    LoginButton loginButton;
     RequestQueue requestQueue;
     ProgressDialog pd;
     UserBean userBean;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     String wifi;
+    CallbackManager callbackManager;
+    AccessTokenTracker accessTokenTracker;
+    ProfileTracker profileTracker;
 
     void views(){
         t=(TextView)findViewById(R.id.link_signup);
+        textFb=(TextView)findViewById(R.id.faceb);
+        loginButton=(LoginButton)findViewById(R.id.loginButton);
         t.setOnClickListener(this);
         textemail=(EditText)findViewById(R.id.input_email);
         textpass=(EditText)findViewById(R.id.input_password);
@@ -59,14 +76,80 @@ TextView t;
 
         WifiManager wifiManager=(WifiManager)getSystemService(Context.WIFI_SERVICE);
         wifi=wifiManager.getConnectionInfo().getMacAddress();
+        callbackManager=CallbackManager.Factory.create();
+
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(this);
         setContentView(R.layout.activity_login);
         views();
+        accessTokenTracker=new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+
+            }
+        };
+        profileTracker=new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                nextActivity(currentProfile);
+            }
+        };
+        accessTokenTracker.startTracking();
+        profileTracker.startTracking();
+
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Profile profile=Profile.getCurrentProfile();
+                nextActivity(profile);
+                textFb.setText("Login Success\n"+loginResult.getAccessToken().getUserId());
+            }
+
+            @Override
+            public void onCancel() {
+                textFb.setText("Login Canceled");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        });
 //        ActionBar a=getSupportActionBar();
 //        a.hide();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Profile profile=Profile.getCurrentProfile();
+        nextActivity(profile);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        profileTracker.stopTracking();
+        accessTokenTracker.stopTracking();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode,resultCode,data);
+    }
+
+    void nextActivity(Profile profile){
+        if(profile!=null){
+            Intent intent=new Intent(this,FacebookLogin.class);
+            intent.putExtra("name",profile.getName());
+            intent.putExtra("picture",profile.getProfilePictureUri(200,200).toString());
+            startActivity(intent);
+
+        }
     }
 
     @Override
