@@ -176,11 +176,6 @@ public class Home extends AppCompatActivity
 //            Intent i=new Intent(this,Donor_details.class);
 //            startActivity(i);
 
-        } else if (id == R.id.nav_slideshow) {
-
-//
-        } else if (id == R.id.nav_manage) {
-
         } else if (id == R.id.nav_logout) {
             AlertDialog.Builder ad=new AlertDialog.Builder(Home.this);
             ad.setTitle("Do You Wish to Logout");

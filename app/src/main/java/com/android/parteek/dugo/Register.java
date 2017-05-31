@@ -186,7 +186,9 @@ public class Register extends AppCompatActivity implements CompoundButton.OnChec
         userBean.setDate(date);
         userBean.setTime(time);
         Log.e("details",userBean.toString());
-        insert();
+            if(validateFields()) {
+                insert();
+            }
         }else if(id==R.id.link_signin){
             Intent i=new Intent(this,Login.class);
             startActivity(i);
@@ -282,5 +284,31 @@ protected Map<String, String> getParams() throws AuthFailureError {
         });
 
 
+    }
+
+    boolean validateFields(){
+        boolean flag=true;
+        if(userBean.getName().isEmpty()){
+            flag=false;
+            name.setError("Please Enter Name");
+        }if(userBean.getPhone().isEmpty()){
+            flag=false;
+            phone.setError("Please Enter Phone Number");
+        }else {
+            if (userBean.getPhone().length() != 10) {
+                flag = false;
+                phone.setError("Please Enter Correct Phone Number");
+            }
+        }
+        if(userBean.getPassword().isEmpty()){
+            flag=false;
+            password.setError("Please Enter Password");
+        }else{
+            if(userBean.getPassword().length()<8){
+                flag=false;
+                password.setError("Password Must be 8 Characters");
+            }
+        }
+        return flag;
     }
         }

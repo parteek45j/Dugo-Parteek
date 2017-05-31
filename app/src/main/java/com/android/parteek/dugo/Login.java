@@ -59,6 +59,7 @@ TextView t;
     UserBean userBean;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
+
     String wifi;
     CallbackManager callbackManager;
     AccessTokenTracker accessTokenTracker;
@@ -179,12 +180,8 @@ TextView t;
         }else if(id==R.id.btn_login){
             userBean.setPhone(textemail.getText().toString().trim());
             userBean.setPassword(textpass.getText().toString().trim());
-            if(!userBean.getPhone().equals("123456")&&!userBean.getPassword().equals("admin")) {
+            if(validateFields()) {
                 login();
-            }else{
-                Intent intent=new Intent(Login.this,Adminstrator.class);
-                startActivity(intent);
-                finish();
             }
         }
     }
@@ -326,4 +323,27 @@ void permission(){
             }
         }
     }
+    boolean validateFields(){
+        boolean flag=true;
+        if(userBean.getPhone().isEmpty()){
+            flag=false;
+            textemail.setError("Please Enter Phone Number");
+        }else{
+            if (userBean.getPhone().length()!=10){
+                flag=false;
+                textemail.setError("Please Enter Correct Phone Number");
+            }
+        }
+        if(userBean.getPassword().isEmpty()){
+            flag=false;
+            textpass.setError("Please Enter Password");
+        }else {
+            if (userBean.getPassword().length() < 8) {
+                flag = false;
+                textpass.setError("Password Must be 8 Characters");
+            }
+        }
+        return  flag;
+    }
+
 }

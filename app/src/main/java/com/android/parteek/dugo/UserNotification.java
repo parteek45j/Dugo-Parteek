@@ -1,8 +1,10 @@
 package com.android.parteek.dugo;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -74,6 +76,18 @@ public class UserNotification extends AppCompatActivity {
     public void onClick1(View view) {
         Toast.makeText(this, "Reject", Toast.LENGTH_SHORT).show();
 
+        Toast.makeText(this, "Reject", Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder ab=new AlertDialog.Builder(this);
+        ab.setMessage("Are You Sure?");
+        ab.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        ab.setPositiveButton("No",null);
+        ab.create().show();
+
 
     }
     void putDonor(){
@@ -88,6 +102,9 @@ public class UserNotification extends AppCompatActivity {
 
                     if(succ>0){
                         pd.dismiss();
+                        Intent i=new Intent(UserNotification.this,Home.class);
+                        startActivity(i);
+                        finish();
                         Toast.makeText(UserNotification.this, ""+mess, Toast.LENGTH_SHORT).show();
                     }else{
                         pd.dismiss();
