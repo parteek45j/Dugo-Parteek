@@ -14,6 +14,10 @@
             android:id="@+id/nav_gallery"
             android:icon="@drawable/userdetails"
             android:title="Donor's Details" />
+        <item
+            android:id="@+id/pend00"
+            android:icon="@drawable/smartphone"
+            android:title="Pending Requestes"/>
     </group>
 
     <item android:title="User">
